@@ -11,12 +11,18 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # バージョンをv3に更新
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # 全ての履歴を取得
+          ref: develop  # チェックアウトするブランチを指定
+
+      - name: Debug info
+        run: git status
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3  # バージョンをv3に更新
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Node.js 20を使用
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
@@ -25,7 +31,7 @@ jobs:
         run: npm run build
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4  # バージョンをv4に更新
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
